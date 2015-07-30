@@ -131,6 +131,13 @@ int fstrim_filesystems(int deep_trim)
 {
     pthread_t t;
     int ret;
+    extern struct fstab *fstab;
+
+    /* fix for empty fstab */
+    if(!fstab) {
+	SLOGI("No fstab entries, thus no fstrim necessary\n");
+	return 0;
+    }
 
     /* Get a wakelock as this may take a while, and we don't want the
      * device to sleep on us.
